@@ -128,5 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+<<<<<<< Updated upstream
 # Papers folder
 Papers/
+=======
+# Visual Studio Code
+.vscode/
+>>>>>>> Stashed changes
