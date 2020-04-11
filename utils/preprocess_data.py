@@ -48,9 +48,9 @@ def preprocessing_sentences(paths_sentences, max_len=55):
 
 def table_paths_dataset(preprocessed_paths, preprocessed_sentences):
     print('Creating the table paths for flow_from_tablePaths ..')
-    padded_sentences = np.concatenate([preprocessed_sentences[0],
-                                     preprocessed_sentences[1],
-                                     preprocessed_sentences[2]])
+    padded_sentences = preprocessed_sentences[0]
+    for i in range(1, len(preprocessed_sentences)):
+        padded_sentences = np.concatenate([padded_sentences, preprocessed_sentences[i]], axis=0)
     pre_dataset = []
     for i in range(padded_sentences.shape[0]):
         pre_dataset.append([preprocessed_paths[i][0],
@@ -58,4 +58,4 @@ def table_paths_dataset(preprocessed_paths, preprocessed_sentences):
                             str(padded_sentences[i].tolist())[1:-1]
                            ]
                           )
-    return np.r_[pre_dataset][:-1,:] #La ultima fila no tiene nada
+    return np.r_[pre_dataset]# Los archivos no deben tener enter al final
