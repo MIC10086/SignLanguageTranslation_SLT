@@ -1,3 +1,4 @@
+import tensorflow as tf
 import numpy as np
 
 def subsampling(sign_list, mean=128):
@@ -97,5 +98,5 @@ def frame_sampling(frames, nTempo):
 
     return frames_list
 
-def flip_vertical(volume):
-    return np.flip(volume, (0, 2))[::-1]
+def video_flip_horizontal(data, label):
+    return (tf.reverse(data[0], [2]), data[1]), label
