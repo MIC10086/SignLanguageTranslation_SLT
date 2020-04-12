@@ -13,6 +13,7 @@ def self_attention_v1_0(encoder_output):
     x = tf.matmul(a=q, b=k, transpose_b=True, name="matmul_qk_sea")
 
     r = tf.shape(encoder_output, name="get_shape_sea")[-1]
+    r = tf.cast(r, tf.float32, name="cast_shape_sea")
     r = tf.sqrt(r, name="sqrt_r_sea")
 
     x = tf.divide(x = x, y = r, name = "divide_qk_r_sea")
