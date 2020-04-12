@@ -2,7 +2,7 @@
 import tensorflow as tf
 
 def SparseCategoricalCrossentropy_mask(real, pred):
-    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False, reduction='none')
+    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(reduction='none')
     mask = tf.math.logical_not(tf.math.equal(real, 0))
     loss_ = loss_object(real, pred)
 
