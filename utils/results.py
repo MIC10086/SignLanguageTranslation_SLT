@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 from nltk.translate.meteor_score import single_meteor_score
 import sys
-sys.append("../")
+sys.path.append("../")
 from metrics import bleu, jiwer, rouge
 
 def __load_frame__(frame_path, size = None, channels = 3):
