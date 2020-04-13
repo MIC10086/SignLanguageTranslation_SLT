@@ -12,7 +12,7 @@ def preprocessing_paths(video_paths, path2videos, type_='jpg'):
             for path in f:
                 new_path = path.replace('<PATH_TO_EXTRACTED_AND_RESIZED_FRAMES>', path2videos).strip()
                 if len(new_path) > 1:
-                    paths.append([new_path+type_, folder])
+                    paths.append([new_path+type_, folder.lower()])
     print('Completed')
     return paths
 
