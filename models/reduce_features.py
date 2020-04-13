@@ -11,7 +11,8 @@ def reduce_features_v1_0(input_features):
         name = "time_dist_rf"
     )(x)
 
-    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1], -1], name="reshape_rf")(x)
+    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1],
+        input_features.shape[2]*input_features.shape[3]], name="reshape_rf")(x)
 
     return x # Output shape (b, t, h*w)
 
@@ -21,7 +22,8 @@ def reduce_features_v1_1(input_features):
     x = tf.keras.layers.Conv3D(filters=1, kernel_size=1, padding="same", activation="relu",
                               name='conv3d_rf')(input_features)
     
-    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1], -1], name="reshape_rf")(x)
+    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1], 
+        input_features.shape[2]*input_features.shape[3]], name="reshape_rf")(x)
 
     return x # Output shape (b, t, h*w)
 
@@ -40,6 +42,7 @@ def reduce_features_v1_2(input_features):
     x = tf.keras.layers.Conv3D(filters=1, kernel_size=1, padding="same", activation="relu",
                               name='conv3d_1x1_rf')(x)
     
-    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1], -1], name="reshape_rf")(x)
+    x = tf.keras.layers.Reshape(target_shape=[input_features.shape[1],
+        input_features.shape[2]*input_features.shape[3]], name="reshape_rf")(x)
 
     return x # Output shape (b, t, h*w)
