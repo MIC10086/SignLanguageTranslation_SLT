@@ -39,8 +39,11 @@ def save_predictions(model, path_to_save, vocab, args, train_data, test_data, de
             print("Reference: " + " ".join(target_sentence))
 
             # Predict in the model
-            prediction_indexes = model.predict((video, sentence[:-1]))
+            prediction_indexes = model.predict((np.r_[[video]], 
+                np.r_[[sentence[:-1]]]))
+            prediction_indexes = np.argmax(prediction_indexes[0], axis=1)
             prediction_sentence = [index_word[i] for i in prediction_indexes]
+            
             print("Translation: "+" ".join(prediction_sentence)+"\n")
 
             results[type_data][path] = {"prediction_sentence" : prediction_sentence,
@@ -60,13 +63,13 @@ def calculate_metrics_results(results : dict):
         translations_rouge = []
         wert = 0.0
         meteort = 0.0
-        for video in data.keys():
-            translation = video["prediction_sentence"]
+        for video in results[data].keys():
+            translation = results[data][video]["prediction_sentence"]
             if '</s>' in translation:
                 translation.remove('</s>')
             translation = " ".join(translation)
 
-            reference = video["target_sentence"]
+            reference = results[data][video]["target_sentence"]
             if '</s>' in reference:
                 reference.remove('</s>')
             reference = " ".join(reference)
