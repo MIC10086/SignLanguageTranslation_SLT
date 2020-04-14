@@ -20,38 +20,30 @@ def __load_frame__(frame_path, size = None, channels = 3):
         else:
             return img
 
-def save_predictions(model, path_to_save, vocab, table_paths, args):
+def save_predictions(model, path_to_save, vocab, args, train_data, test_data, dev_data = None):
 
     results = {}
 
     index_word = vocab.index_word
 
-    types_data = np.unique(table_paths[:,1])[::-1] # Reverse the vector to have the order train, test and dev
+    types_data = [("train", train_data), ("test", test_data)]
+    if dev_data:
+        types_data.append(("dev", dev_data))
 
-    for type_data in types_data:
+    for type_data, gen in types_data:
         results[type_data] = {}
-        data = table_paths[table_paths[:,1]==type_data]
-        for video in data:
-            # Convert the string of numbers to array
-            sentence = np.r_[[int(i) for i in video[2].split(", ")]]
+        for video, sentence, path in gen:
             # Convert the array to word
             target_sentence = [index_word[i] for i in sentence][1:]
-            print("Video: " + video[0])
+            print("Video: " + path)
             print("Reference: " + " ".join(target_sentence))
 
-            # Load the video
-            v = []
-            frames_path = [os.path.join(video[0], frame) for frame in sorted(os.listdir(video[0]))]
-            for frame in frames_path:
-                v.append(__load_frame__(frame, args.inputShape[1:3]))
-            v = np.array([v], dtype=np.float32)
-
             # Predict in the model
-            prediction_indexes = model.predict((v, sentence[:-1]))
+            prediction_indexes = model.predict((video, sentence[:-1]))
             prediction_sentence = [index_word[i] for i in prediction_indexes]
             print("Translation: "+" ".join(prediction_sentence)+"\n")
 
-            results[type_data][video[0]] = {"prediction_sentence" : prediction_sentence,
+            results[type_data][path] = {"prediction_sentence" : prediction_sentence,
                 "target_sentence" : target_sentence
                 }
     
