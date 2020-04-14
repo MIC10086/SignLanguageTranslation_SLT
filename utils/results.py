@@ -40,14 +40,14 @@ def save_predictions(model, path_to_save, vocab, table_paths, args):
             print("Reference: " + " ".join(target_sentence))
 
             # Load the video
-            video = []
-            frames_path = [os.path.join(video, frame) for frame in sorted(os.listdir(video))]
+            v = []
+            frames_path = [os.path.join(video[0], frame) for frame in sorted(os.listdir(video[0]))]
             for frame in frames_path:
-                video.append(__load_frame__(frame, args.inputShape[1:3]))
-            video = np.array([video], dtype=np.float32)
+                v.append(__load_frame__(frame, args.inputShape[1:3]))
+            v = np.array([v], dtype=np.float32)
 
             # Predict in the model
-            prediction_indexes = model.predict((video, sentence[:-1]))
+            prediction_indexes = model.predict((v, sentence[:-1]))
             prediction_sentence = [index_word[i] for i in prediction_indexes]
             print("Translation: "+" ".join(prediction_sentence)+"\n")
 
