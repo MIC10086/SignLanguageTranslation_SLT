@@ -84,7 +84,7 @@ def calculate_metrics_results(results : dict):
             wert += jiwer.wer(truth = reference, hypothesis = translation) 
             meteort += single_meteor_score(reference, translation)
 
-            translations.append([translation.split(" ")])
+            translations.append(translation.split(" "))
             translations_rouge.append(translation)
 
             references.append([reference.split(" ")])
@@ -97,4 +97,4 @@ def calculate_metrics_results(results : dict):
         print(data + ' Meteor: ' + str((meteort/len(references))*100))
         for max_ in range(1,5):
             bleu_score, _, _, _, _, _ = bleu.compute_bleu(references, translations, max_order=max_)
-            print(data + ' bleu: ' + str(max_,bleu_score*100))
+            print(data + ' bleu: ' + str(max_) + " " + str(bleu_score*100))
