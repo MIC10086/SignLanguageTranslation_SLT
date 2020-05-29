@@ -1,12 +1,13 @@
 #File for losses to use in the model
 import tensorflow as tf
 
+loss_object = tf.keras.losses.SparseCategoricalCrossentropy(reduction='none')
+
 def SparseCategoricalCrossentropy_mask(real, pred):
-    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(reduction='none')
     mask = tf.math.logical_not(tf.math.equal(real, 0))
-    loss_ = loss_object(real, pred)
+    loss = loss_object(real, pred)
 
     mask = tf.cast(mask, dtype=loss_.dtype)
-    loss_ *= mask
+    loss = tf.multiply(loss_, mask)
 
-    return tf.reduce_mean(loss_)
+    return tf.reduce_mean(loss)

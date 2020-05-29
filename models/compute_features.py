@@ -2,6 +2,15 @@ import tensorflow as tf
 from utils.load_weights import loadweights
 
 def compute_features_v1_0(input_video, pretrained=None, weight_decay=None):
+    """Function that return the operations applied over input_video for compute features.
+    This method uses the Compute Features v1.0 show in Models_graphs and doesn't have 
+    pretrained weights implemented yet.
+    Args:
+        input_video: A tf.keras.Input instance for the video input to compute its features.
+        pretrained: A tuple with (model_name, path_to_weights) to load the pretrained weights
+            using the loadweights method.
+        weight_decay: A tf.keras.regularizers instance to regulize weights in layers.
+    """
     # Input video shape (b, t, h, w, c)
 
     if pretrained:
@@ -30,7 +39,15 @@ def compute_features_v1_0(input_video, pretrained=None, weight_decay=None):
     return x # Output shape (b, t, h/16, w/16, 128)
 
 def compute_features_v1_1(input_video, pretrained=(None, None), weight_decay=None):
-    """pretrained is a tuple with (model, path_to_weights)"""
+    """Function that return the operations applied over input_video for compute features.
+    This method uses the Compute Features v1.1 show in Models_graphs and have pretrained
+    weights.
+    Args:
+        input_video: A tf.keras.Input instance for the video input to compute its features.
+        pretrained: A tuple with (model_name, path_to_weights) to load the pretrained weights
+            using the loadweights method.
+        weight_decay: A tf.keras.regularizers instance to regulize weights in layers.
+    """
     # Input video shape (b, t, h, w, c)
 
     weights = loadweights(pretrained[0], pretrained[1])
