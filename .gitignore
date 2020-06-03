@@ -130,3 +130,7 @@ dmypy.json
 
 # Visual Studio Code
 .vscode/
+
+# Drive and data folder
+drive/
+data/
