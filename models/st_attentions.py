@@ -42,7 +42,9 @@ def st_attention_v1_4_0(decoder_output, encoder_output, reduce_features):
     x = tf.keras.layers.Dense(units=reduce_features.shape[2], use_bias=False,
         name="dense_qk_sta")(x)
 
-    x = tf.multiply(x, reduce_features, name='mul_pw_qkv_sta')
+    red_feat = tf.expand_dims(reduce_features, axis=1, name='expand_dims_v_sta')
+
+    x = tf.multiply(x, red_feat, name='mul_pw_qkv_sta')
 
     x = tf.keras.layers.Reshape(target_shape=[decoder_output.shape[1], -1], 
         name="reshape_qkv_sta")(x)
@@ -51,7 +53,9 @@ def st_attention_v1_4_0(decoder_output, encoder_output, reduce_features):
 
     v_flat = tf.keras.layers.Flatten(name='flat_v_sta')(reduce_features)
 
-    x = tf.multiply(x, v_flat, name='mul_pw_qkvv_sta')
+    v_flat_exp = tf.expand_dims(v_flat, axis=1, name="expand_dims_vflat_sta")
+
+    x = tf.multiply(x, v_flat_exp, name='mul_pw_qkvv_sta')
 
     x = tf.keras.layers.Reshape(target_shape=[decoder_output.shape[1],
                                               reduce_features.shape[1],
@@ -72,11 +76,13 @@ def st_attention_v1_4_1(decoder_output, encoder_output, reduce_features):
     x = tf.keras.layers.Dense(units=reduce_features.shape[2], use_bias=False,
         name="dense_qk_sta")(x)
 
-    x = tf.multiply(x, reduce_features, name='mul_pw_qkv_sta')
+    red_feat = tf.expand_dims(reduce_features, axis=1, name='expand_dims_v_sta')
+
+    x = tf.multiply(x, red_feat, name='mul_pw_qkv_sta')
 
     x = tf.keras.layers.Softmax(axis=-1, name='att_weights_sta')(x)
 
-    x = tf.multiply(x, reduce_features, name='mul_pw_qkvv_sta')
+    x = tf.multiply(x, red_feat, name='mul_pw_qkvv_sta')
 
     x = tf.reduce_sum(x, axis=-2, name='context_vector_sta')
 
@@ -92,11 +98,13 @@ def st_attention_v1_5(decoder_output, encoder_output, reduce_features):
 
     v_flat = tf.keras.layers.Flatten(name='flat_v_sta')(reduce_features)
 
-    x = tf.multiply(x, v_flat, name='mul_pw_qkv_sta')
+    v_flat_exp = tf.expand_dims(v_flat, axis=1, name="expand_dims_vflat_sta")
+
+    x = tf.multiply(x, v_flat_exp, name='mul_pw_qkv_sta')
 
     x = tf.keras.layers.Softmax(axis=-1, name='att_weights_sta')(x)
 
-    x = tf.multiply(x, v_flat, name='mul_pw_qkvv_sta')
+    x = tf.multiply(x, v_flat_exp, name='mul_pw_qkvv_sta')
 
     x = tf.keras.layers.Reshape(target_shape=[decoder_output.shape[1],
                                               reduce_features.shape[1],

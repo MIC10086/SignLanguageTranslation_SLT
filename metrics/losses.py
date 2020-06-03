@@ -7,7 +7,7 @@ def SparseCategoricalCrossentropy_mask(real, pred):
     mask = tf.math.logical_not(tf.math.equal(real, 0))
     loss = loss_object(real, pred)
 
-    mask = tf.cast(mask, dtype=loss_.dtype)
-    loss = tf.multiply(loss_, mask)
+    mask = tf.cast(mask, dtype=loss.dtype)
+    loss = tf.multiply(loss, mask)
 
     return tf.reduce_mean(loss)
