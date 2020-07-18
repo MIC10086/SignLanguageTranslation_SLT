@@ -134,3 +134,4 @@ dmypy.json
 # Drive and data folder
 drive/
 data/
+*.png
